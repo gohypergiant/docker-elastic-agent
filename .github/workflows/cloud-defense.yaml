@@ -1,0 +1,22 @@
+name: Cloud Defense Scan
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run:
+          docker build -t elastic-agent .
+      - name: Cloud Defense Scan
+        env: 
+          CD_API_KEY: ${{ secrets.CLOUDDEFENSE_API_TOKEN }}
+          PROJECT: docker-elastic-agent
+        run: |
+          curl https://raw.githubusercontent.com/CloudDefenseAI/cd/master/latest/cd-latest-linux-x64.tar.gz > /tmp/cd-latest-linux-x64.tar.gz
+          tar -C /tmp -xzf /tmp/cd-latest-linux-x64.tar.gz
+          chmod +x /tmp/cdefense
+          /tmp/cdefense c --image-name=elastic-agent --project-name="${PROJECT}"
