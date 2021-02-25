@@ -1,6 +1,6 @@
 #! /bin/sh
 
-set -x
+apt install -y procps
 
-/opt/elastic/elastic-agent install -f --kibana-url=${KIBANA_URL} --enrollment-token=${ENROLLMENT_TOKEN}
-exec /opt/elastic/elastic-agent && /opt/elastic/elastic-agent enroll ${KIBANA_URL} ${ENROLLMENT_TOKEN}
+/opt/elastic/elastic-agent install -e -f --kibana-url=${KIBANA_URL} --enrollment-token=${ENROLLMENT_TOKEN} &
+sleep infinity
